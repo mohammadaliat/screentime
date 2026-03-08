@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ScreenPilot | Desktop Screen Time Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div id="permissionModal" class="modal visible" role="dialog" aria-modal="true" aria-labelledby="permissionTitle">
+      <div class="modal-card">
+        <h1 id="permissionTitle">Allow ScreenPilot Permissions</h1>
+        <p>
+          To analyze screen time and enforce app limits, ScreenPilot needs permission to read app activity data on this device.
+          You can revoke this anytime.
+        </p>
+        <div class="modal-actions">
+          <button id="allowBtn" class="btn btn-primary">Allow Access</button>
+          <button id="denyBtn" class="btn btn-secondary">Not now</button>
+        </div>
+      </div>
+    </div>
+
+    <header class="topbar">
+      <div>
+        <h1>ScreenPilot</h1>
+        <p>Analyze, control, and optimize your desktop screen time.</p>
+      </div>
+      <div class="theme-toggle-wrap">
+        <label for="themeMode">Theme</label>
+        <select id="themeMode">
+          <option value="system">System Default</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+    </header>
+
+    <main>
+      <section class="card auth-card">
+        <h2>Account & Multi-Device Control</h2>
+        <form id="authForm" class="grid-form">
+          <input type="email" id="email" placeholder="Email" required />
+          <input type="password" id="password" placeholder="Password" required minlength="6" />
+          <div class="actions-row">
+            <button class="btn btn-primary" type="submit" data-mode="signup">Sign up</button>
+            <button class="btn btn-secondary" type="submit" data-mode="login">Login</button>
+          </div>
+        </form>
+        <p id="authStatus" class="muted">Not signed in.</p>
+        <div id="deviceControls" class="device-controls hidden">
+          <h3>Connected Devices</h3>
+          <ul id="deviceList"></ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Screen Time Analytics</h2>
+        <div class="filters">
+          <button class="chip active" data-range="day">Day</button>
+          <button class="chip" data-range="week">Week</button>
+          <button class="chip" data-range="month">Month</button>
+          <div class="custom-range">
+            <label>Custom</label>
+            <input type="date" id="startDate" />
+            <input type="date" id="endDate" />
+            <button id="applyCustom" class="btn btn-secondary">Apply</button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat"><h3>Total Time</h3><p id="totalTime">0h</p></article>
+          <article class="stat"><h3>Top App</h3><p id="topApp">-</p></article>
+          <article class="stat"><h3>Focus Score</h3><p id="focusScore">0%</p></article>
+          <article class="stat"><h3>Break Alerts</h3><p id="breakAlerts">0</p></article>
+        </div>
+
+        <div class="charts-grid">
+          <div class="chart-card"><canvas id="usageChart"></canvas></div>
+          <div class="chart-card flow-wrap">
+            <h3>Usage Flowchart</h3>
+            <svg id="flowchart" viewBox="0 0 700 220" aria-label="Usage flowchart"></svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>App Blocker & Time Limits</h2>
+        <form id="limitForm" class="grid-form">
+          <input id="appName" placeholder="App name (e.g. YouTube)" required />
+          <input id="limitMins" type="number" placeholder="Limit in minutes" min="5" required />
+          <button class="btn btn-primary" type="submit">Add Limit</button>
+        </form>
+        <ul id="limitList" class="limit-list"></ul>
+      </section>
+    </main>
+  </body>
+</html>
